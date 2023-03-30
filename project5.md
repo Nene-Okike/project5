@@ -5,57 +5,80 @@ Server B name - `mysql client`
 
 Run sudo apt update to update the ubuntu server
 
-On mysql server Linux Server install MySQL Server software using this command 
+On mysql server Linux Server run this command to install MySQL Server software 
 
-sudo apt install mysql-server -y
+    $  sudo apt install mysql-server -y
 
-configure mysql by running the following commands
+enable mysql by running this command
 
-run sudo systemctl enable mysql
+  $  sudo systemctl enable mysql
 
-sudo mysql 
-This will show ![welcome](welcome.png)
+  Enter mysql server by this command :
 
-Set a password for the root user, using mysql_native_password as default authentication method
-The root user is defined with this passwors 'PassWord.1'
+     $   sudo mysql 
+
+This will show a welcome page
+
+
+ ![welcome](welcome.png)
+
+Set a password for the root user, using mysql_native_password as default authentication method.
+The root user will be defined with this password 'PassWord.1'
 
 Run the security script that comes pre-installed with MySQL. This script will remove some insecure default settings and lock down access to your database system.
 
-$ sudo mysql_secure_installation
+     $ sudo mysql_secure_installation
+
 
 On the mysql-client server run
-sudo apt update 
-sudo apt install mysql-client -y
 
-Edit the inbound rules in the mysql-server by openning port 3306 and allow access only to the mysql-client server private IP, since they are in the same network
+     $   sudo apt update 
+     $   sudo apt install mysql-client -y
+
+Edit the inbound rules in the mysql-server :- open port 3306 and allow access only to the mysql-client server private IP, since they are in the same network.
 
 In the mysql-server
-create user using this command
-CREATE USER 'remote_user'@'%' IDENTIFIED WITH mysql_native_password BY 'password'
-create Database test_db with this command
+create user using this command and granr required privilleges
 
-CREATE DATABASE test_db;
+    mysql> CREATE USER 'remote_user'@'%' IDENTIFIED WITH mysql_native_password BY 'password'
 
-Grant access to user to the test_db database
-GRANT ALL ON test_db.* TO 'remote_user'@'%' WITH GRANT OPTION;
+Create Database test_db with this command
+
+    mysql> CREATE DATABASE test_db;
+
+Grant access to user to the test_db database with this command
+
+mysql> GRANT ALL ON test_db.* TO 'remote_user'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES:
+
+This is the output of the following commanf=ds
 ![usercreated](user%26privileges.png)
 
  Configure MySQL server to allow connections from remote hosts.
 
-sudo vi /etc/mysql/mysql.conf.d/mysqld.cnf
+Exit mysql 
+
+$  sudo vi /etc/mysql/mysql.conf.d/mysqld.cnf
+
+
 Replace ‘127.0.0.1’ to ‘0.0.0.0’ like this:
- Restart with 
- sudo systemctl restart mysql
 
- Connect to the server from the client 
+Restart mysql  with
 
- sudo mysql -u remote_user -h 172.31.86.248 -p
+     $ sudo systemctl restart mysql
 
- This is the output ![remote](remoteconnection.png)
+ Connect to the server from the client using this command
+
+      $  sudo mysql -u remote_user -h 172.31.86.248 -p
+
+ This is the output 
+ 
+ ![remote](remoteconnection.png)
 
  Check that you have successfully connected to a remote MySQL server and can perform SQL queries:
 
 Show databases;
 
 output ![database](showdb.png)
+
+This task was to createa client-server archtecture using mysql as the relational database managemnt system and that gas been accomplished
